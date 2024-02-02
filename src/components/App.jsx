@@ -15,27 +15,31 @@ function App() {
         }
         const data = await response.json();
         setCountries(data);
+        setContinents(data);
       } catch (error) {
         console.error('Error al cargar los datos:', error.message);
+        throw error;
       }
     };
 
     fetchData();
   }, []);
 
+
   const [countries, setCountries] = useState([]);
+  const [continents, setContinents] = useState([]);
   const [filter, setFilter] = useState('');
-  // const [select, setSelect] = useState('All');
+  const [select, setSelect] = useState('');
 
   const filterCountry = countries.filter((country) => country.name.common.toLowerCase().includes(filter.toLowerCase()));
-  // const selectContinent = countries.filter((country) => country.continents.toLowerCase().includes(select.toLowerCase));
+  const selectContinent = continents.filter((continent) => continent.continents[0].toLowerCase() === select.toLowerCase());
 
   return (
     <>
       <Header/>
       <main>
-        <Filter setFilter={setFilter}/>
-        <ListCountries filterCountry={filterCountry}/>
+        <Filter setFilter={setFilter} setSelect={setSelect}/>
+        <ListCountries filterCountry={filterCountry} selectContinent={selectContinent}/>
       </main>
     </>
   )
